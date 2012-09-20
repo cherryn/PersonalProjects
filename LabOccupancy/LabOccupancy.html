@@ -1,0 +1,70 @@
+<html>
+<head>
+	<script src="Rooms.jsonp?"+Date.now()></script>
+	<script>
+		var colors = new Array(
+		"88FF88",
+		"99FF99",
+		"AAFFAA",
+		"BBFFBB",
+		"CCFFCC",
+		"DDFFDD",
+		"EEFFEE",
+		"FFFFFF",
+		"FFEEEE",
+		"FFDDDD",
+		"FFCCCC",
+		"FFBBBB",
+		"FFAAAA",
+		"FF9999",
+		"FF8888",
+		"FF7777",
+		"FF6666",
+		"FF5555",
+		"FF4444",
+		"FF2222",
+		"FF1100",
+		"DD1100",
+		"BB1100",
+		"AA1100",
+		"990000"
+	);
+	var SD;
+	function loadSVGDoc() {
+		var S = document.getElementById("map");
+		SD = S.getSVGDocument();
+	}
+	function setColor(name,color) {
+		SD.getElementById(name).setAttribute("style",
+			"fill:#"+color+";"+
+			"stroke:#000000;"+
+			"stroke-width:0.99728459;"+
+			"stroke-miterlimit:4;"+
+			"stroke-opacity:1;"+
+			"stroke-dasharray:none"
+		);
+	}
+	function setCnt(name,cur,hi) {
+		for(var i=0; i<20&&SD==null;i+=1) loadSVGDoc()
+		SD.getElementById(name+"cnt").textContent="("+cur+"/"+hi+")"
+		var lvl = Math.floor(cur*24/hi);
+		setColor(name,colors[lvl]);
+	}
+	function updateSVG() {
+		loadSVGDoc();
+		var rooms = JSON.parse(Rooms);
+		for(var i=0; i<rooms.length; i++) {
+			var room = rooms[i];
+			setCnt(room.name, room.num, room.max);
+		}
+	}
+	</script>
+</head>
+<body onload="updateSVG()">
+	<embed id="map" src="Lawson.svg">
+	</embed>
+	<script>
+		updateSVG();
+	</script>
+</body>
+</html>
